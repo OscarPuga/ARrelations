@@ -3,6 +3,11 @@ class Profile < ActiveRecord::Base
     validates :gender, inclusion: { in: %w(male female) }
     validate :exist_one_name, :badnamed_male
     
+    def self.get_all_profiles (min, max)
+        return Profile.where('birth_year BETWEEN :min_year AND :max_year', min_year: min, max_year: max).order(:birth_year)
+    end
+    
+    
     def exist_one_name
         errors.add(:first_name, "at last one of the names must be set") if !(first_name.present?) && !(last_name.present?)
     end
